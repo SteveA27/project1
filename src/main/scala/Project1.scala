@@ -93,6 +93,8 @@ object Project1 {
     var cont = true
     var cont1 = true
     var cont2 = true
+    var adminCont = true
+    var basicCont = true
     //var usrCont = true
 
     do{
@@ -103,6 +105,7 @@ object Project1 {
       println("Please choose if you are an existing or new user")
       println("1: Create Account")
       println("2: Sign In")
+      println("3: Quit")
       var usrInputNum = readLine().toInt
       if(usrInputNum == 1){
         println("Enter a username: ")
@@ -131,386 +134,393 @@ object Project1 {
         val usrPwdV = usrPwdVal.first.getString(0)
         val usrTypeV = usrTypeVal.first.getString(0)
         if((usrName == usrNameV) && (usrTypeV == "Admin")&& (usrPwdV == usrPwd)){
-          println(Console.BOLD)
-          println("Admin Menu Options")
-          println(Console.RESET)
-          println("1: Answer NFL questions")
-          println("2: Update user")
-          println("3: View All users")
-          println("4: Create user")
-          println("5: Exit the program")
-          println("6: Delete user")
+          do{
+            println(Console.BOLD)
+            println("Admin Menu Options")
+            println(Console.RESET)
+            println("1: Answer NFL questions")
+            println("2: Update user")
+            println("3: View All users")
+            println("4: Create user")
+            println("5: Log Out")
+            println("6: Delete user")
 
-          println("Please enter a number choice")
-          var inputSelected = readLine().toInt
+            println("Please enter a number choice")
+            var inputSelected = readLine().toInt
 
-          if(inputSelected == 1){
-            do{
-              println("Question 1")
-              println("Question 2")
-              println("Question 3")
-              println("Question 4")
-              println("Question 5")
-              println("Question 6")
-              println("7: Return to Main Menu")
-              println("Please enter a number to answer a question or 7 to return to the main menu: ")
-              var inputQuestion = readLine().toInt
+            if(inputSelected == 1){
+              do{
+                println("Question 1")
+                println("Question 2")
+                println("Question 3")
+                println("Question 4")
+                println("Question 5")
+                println("Question 6")
+                println("7: Return to Main Menu")
+                println("Please enter a number to answer a question or 7 to return to the main menu: ")
+                var inputQuestion = readLine().toInt
 
-              if(inputQuestion == 1){
-                println("Analytical Question 1: What is the name of the quarter back for the Arizona Cardinals: ")
-                println("A. Kyler Murray B. Derek Henry C. CeeDee Lamb D. Justin Jefferson")
-                val answer1 = readLine()
-                val ariQB = spark.sql("Select name from CurrentNFL Where Position = 'QB' and Team = 'ARI' and College = 'Oklahoma'")
-                val Question1 = ariQB.first.getString(0)
-                if(answer1 == Question1){
-                  println("Correct Answer")
+                if(inputQuestion == 1){
+                  println("Analytical Question 1: What is the name of the quarter back for the Arizona Cardinals: ")
+                  println("A. Kyler Murray B. Derek Henry C. CeeDee Lamb D. Justin Jefferson")
+                  val answer1 = readLine()
+                  val ariQB = spark.sql("Select name from CurrentNFL Where Position = 'QB' and Team = 'ARI' and College = 'Oklahoma'")
+                  val Question1 = ariQB.first.getString(0)
+                  if(answer1 == Question1){
+                    println("Correct Answer")
+                  }
+                  else{
+                    println("Wrong Answer")
+                  }
                 }
-                else{
-                  println("Wrong Answer")
-                }
-              }
-              if(inputQuestion == 2){
-                println("Analytical Questin 2: What college did famous NFL referee Gary Arthur attend: ")
-                println("Answer choices are: A. Pembroke State B. Illnois State C. Wright State D. UCF")
-                val answer2 = readLine()
-                val refCollege = spark.sql("Select College From RefTable Where Name = 'Gary Arthur'")
+                if(inputQuestion == 2){
+                  println("Analytical Questin 2: What college did famous NFL referee Gary Arthur attend: ")
+                  println("Answer choices are: A. Pembroke State B. Illnois State C. Wright State D. UCF")
+                  val answer2 = readLine()
+                  val refCollege = spark.sql("Select College From RefTable Where Name = 'Gary Arthur'")
 
-                val Question2 = refCollege.first.getString(0)
-                if(answer2 == Question2){
-                  println("Correct Answer")
+                  val Question2 = refCollege.first.getString(0)
+                  if(answer2 == Question2){
+                    println("Correct Answer")
+                  }
+                  else {
+                    println("Wrong Answer")
+                  }
                 }
-                else {
-                  println("Wrong Answer")
+                if(inputQuestion == 3){
+                  println("Analytical Question 3: What season is all pro running back Deebo Samuel in?: ")
+                  println("A. 3rd Season B. 6th Season C. Rookie D. 11th Season")
+                  val answer3 = readLine()
+                  val deebExp = spark.sql("Select ExperienceString From CurrentNFL Where Name = 'Deebo Samuel'")
+                  val Question3 = deebExp.first.getString(0)
+                  if(answer3 == Question3){
+                    println("Correct Answer")
+                  }
+                  else {
+                    println("Wrong Answer")
+                  }
                 }
-              }
-              if(inputQuestion == 3){
-                println("Analytical Question 3: What season is all pro running back Deebo Samuel in?: ")
-                println("A. 3rd Season B. 6th Season C. Rookie D. 11th Season")
-                val answer3 = readLine()
-                val deebExp = spark.sql("Select ExperienceString From CurrentNFL Where Name = 'Deebo Samuel'")
-                val Question3 = deebExp.first.getString(0)
-                if(answer3 == Question3){
-                  println("Correct Answer")
+                if(inputQuestion == 4){
+                  println("Analytical Question 4: How many players in the NFL currently attended Oklahoma in college?: ")
+                  println("A. 100 B. 5 C. 62 D. 50")
+                  val answer4 = readLine().toLong
+                  val okNFL = spark.sql("Select count(*) From CurrentNFL Where College = 'Oklahoma'")
+                  val Question4 = okNFL.first.getLong(0)
+                  if(answer4 == Question4){
+                    println("Correct Answer")
+                  }
+                  else{
+                    println("Wrong Answer")
+                  }
                 }
-                else {
-                  println("Wrong Answer")
+                if(inputQuestion == 5){
+                  println("Analytical Question 5: How many players in the NFL currently was born in 1993?: ")
+                  println("A. 6 B. 90 C. 287 D. 77")
+                  val answer5 = readLine().toLong
+                  val NFL93 = spark.sql("Select count(*) From CurrentNFL Where Birthdate like '1993%'")
+                  val Question5 = NFL93.first.getLong(0)
+                  if(answer5 == Question5){
+                    println("Correct answer")
+                  }
+                  else {
+                    println("Wrong Answer")
+                  }
                 }
-              }
-              if(inputQuestion == 4){
-                println("Analytical Question 4: How many players in the NFL currently attended Oklahoma in college?: ")
-                println("A. 100 B. 5 C. 62 D. 50")
-                val answer4 = readLine().toLong
-                val okNFL = spark.sql("Select count(*) From CurrentNFL Where College = 'Oklahoma'")
-                val Question4 = okNFL.first.getLong(0)
-                if(answer4 == Question4){
-                  println("Correct Answer")
+                if(inputQuestion == 6){
+                  println("Analytical Question 6: How many referees in the NFL today have more than 4 years of experience?: ")
+                  println("A. 11 B. 89 C. 63 D. 200")
+                  val answer6 = readLine().toLong
+                  val refExper = spark.sql("Select count(*) From RefTable Where Experience > 4")
+                  val Question6 = refExper.first.getLong(0)
+                  if(answer6 == Question6){
+                    println("Correct answer")
+                  }
+                  else{
+                    println("Wrong answer")
+                  }
                 }
-                else{
-                  println("Wrong Answer")
-                }
-              }
-              if(inputQuestion == 5){
-                println("Analytical Question 5: How many players in the NFL currently was born in 1993?: ")
-                println("A. 6 B. 90 C. 287 D. 77")
-                val answer5 = readLine().toLong
-                val NFL93 = spark.sql("Select count(*) From CurrentNFL Where Birthdate like '1993%'")
-                val Question5 = NFL93.first.getLong(0)
-                if(answer5 == Question5){
-                  println("Correct answer")
-                }
-                else {
-                  println("Wrong Answer")
-                }
-              }
-              if(inputQuestion == 6){
-                println("Analytical Question 6: How many referees in the NFL today have more than 4 years of experience?: ")
-                println("A. 11 B. 89 C. 63 D. 200")
-                val answer6 = readLine().toLong
-                val refExper = spark.sql("Select count(*) From RefTable Where Experience > 4")
-                val Question6 = refExper.first.getLong(0)
-                if(answer6 == Question6){
-                  println("Correct answer")
-                }
-                else{
-                  println("Wrong answer")
-                }
-              }
-              if(inputQuestion == 7){
-                cont1 = false
-              }
-
-            }while(cont1)
-          }
-          if(inputSelected == 4){
-            println("Enter a username: ")
-            val new_username1 = readLine()
-            println("Enter a password: ")
-            val new_pwd1 = readLine()
-            val new_usr_type1 = "Basic"
-            val new_df4 = Seq((new_username1, new_pwd1, new_usr_type1)).toDF("username", "password","user type")
-            new_df4.write.mode("append").csv("C:\\input\\new_data.txt")
-            var new_dfText1 = spark.read.csv("C:\\input\\new_data.txt")
-            new_dfText1 = new_dfText1.withColumnRenamed("_c0", "username")
-            new_dfText1 = new_dfText1.withColumnRenamed("_c1", "password")
-            new_dfText1 = new_dfText1.withColumnRenamed("_c2", "user_type")
-            new_dfText1.write.mode("append").format("hive").saveAsTable("Users")
-          }
-          if(inputSelected == 3){
-            spark.sql("Select * From Users").show()
-          }
-          if(inputSelected == 2){
-
-            do{
-              println("1: Change Password")
-              println("2: Change Username")
-              println("3: Go Back to Main Menu")
-              println("Please choose a number to update account: ")
-              var updateUsrNum = readLine().toInt
-
-              if(updateUsrNum == 1){
-                println("Enter your username: ")
-                var inputExistUsr = readLine()
-                val testdf =  spark.sql(s"Select username From Users Where username = '$inputExistUsr'")
-                val testdfString = testdf.first.getString(0)
-                //println(testdfString)
-
-                if(testdfString == inputExistUsr){
-                  println("Please choose a new password: ")
-                  var newUsrPwd = readLine()
-                  val exUsrType = "Basic"
-                  var new_updateUsrDF = Seq((inputExistUsr, newUsrPwd, exUsrType)).toDF("username", "password","user type")
-                  var all_otherUsrs = spark.sql(s"Select * From Users Where username != '$inputExistUsr'")
-                  var updated_df = all_otherUsrs.union(new_updateUsrDF)
-                  updated_df.coalesce(1).write.mode("overwrite").csv("C:\\input\\new_data.txt")
-                  var newUpdatedText = spark.read.csv("C:\\input\\new_data.txt")
-                  newUpdatedText = newUpdatedText.withColumnRenamed("_c0", "username")
-                  newUpdatedText = newUpdatedText.withColumnRenamed("_c1", "password")
-                  newUpdatedText = newUpdatedText.withColumnRenamed("_c2", "user_type")
-                  newUpdatedText.write.mode("overwrite").format("hive").saveAsTable("Users")
+                if(inputQuestion == 7){
+                  cont1 = false
                 }
 
-              }
-              if(updateUsrNum == 3){
-                cont2 = false
-              }
+              }while(cont1)
+            }
+            if(inputSelected == 4){
+              println("Enter a username: ")
+              val new_username1 = readLine()
+              println("Enter a password: ")
+              val new_pwd1 = readLine()
+              val new_usr_type1 = "Basic"
+              val new_df4 = Seq((new_username1, new_pwd1, new_usr_type1)).toDF("username", "password","user type")
+              new_df4.write.mode("append").csv("C:\\input\\new_data.txt")
+              var new_dfText1 = spark.read.csv("C:\\input\\new_data.txt")
+              new_dfText1 = new_dfText1.withColumnRenamed("_c0", "username")
+              new_dfText1 = new_dfText1.withColumnRenamed("_c1", "password")
+              new_dfText1 = new_dfText1.withColumnRenamed("_c2", "user_type")
+              new_dfText1.write.mode("append").format("hive").saveAsTable("Users")
+            }
+            if(inputSelected == 3){
+              spark.sql("Select * From Users").show()
+            }
+            if(inputSelected == 2){
+
+              do{
+                println("1: Change Password")
+                println("2: Change Username")
+                println("3: Go Back to Main Menu")
+                println("Please choose a number to update account: ")
+                var updateUsrNum = readLine().toInt
+
+                if(updateUsrNum == 1){
+                  println("Enter your username: ")
+                  var inputExistUsr = readLine()
+                  val testdf =  spark.sql(s"Select username From Users Where username = '$inputExistUsr'")
+                  val testdfString = testdf.first.getString(0)
+                  //println(testdfString)
+
+                  if(testdfString == inputExistUsr){
+                    println("Please choose a new password: ")
+                    var newUsrPwd = readLine()
+                    val exUsrType = "Basic"
+                    var new_updateUsrDF = Seq((inputExistUsr, newUsrPwd, exUsrType)).toDF("username", "password","user type")
+                    var all_otherUsrs = spark.sql(s"Select * From Users Where username != '$inputExistUsr'")
+                    var updated_df = all_otherUsrs.union(new_updateUsrDF)
+                    updated_df.coalesce(1).write.mode("overwrite").csv("C:\\input\\new_data.txt")
+                    var newUpdatedText = spark.read.csv("C:\\input\\new_data.txt")
+                    newUpdatedText = newUpdatedText.withColumnRenamed("_c0", "username")
+                    newUpdatedText = newUpdatedText.withColumnRenamed("_c1", "password")
+                    newUpdatedText = newUpdatedText.withColumnRenamed("_c2", "user_type")
+                    newUpdatedText.write.mode("overwrite").format("hive").saveAsTable("Users")
+                  }
+
+                }
+                if(updateUsrNum == 3){
+                  cont2 = false
+                }
 
 
-            }while(cont2)
+              }while(cont2)
 
 
-
-          }
-          if(inputSelected == 5){
-            cont = false
-          }
-          if(inputSelected == 6){
-            println("Enter your username: ")
-            var inputExistUsr = readLine()
-            val testdf =  spark.sql(s"Select username From Users Where username = '$inputExistUsr'")
-            val testdfString = testdf.first.getString(0)
-            if(testdfString == inputExistUsr){
-              var all_otherUsrs = spark.sql(s"Select * From Users Where username != '$inputExistUsr'")
-              all_otherUsrs.coalesce(1).write.mode("overwrite").csv("C:\\input\\new_data.txt")
-              var newUpdatedText = spark.read.csv("C:\\input\\new_data.txt")
-              newUpdatedText = newUpdatedText.withColumnRenamed("_c0", "username")
-              newUpdatedText = newUpdatedText.withColumnRenamed("_c1", "password")
-              newUpdatedText = newUpdatedText.withColumnRenamed("_c2", "user_type")
-              newUpdatedText.write.mode("overwrite").format("hive").saveAsTable("Users")
 
             }
-          }
+            if(inputSelected == 5){
+              adminCont = false
+            }
+            if(inputSelected == 6){
+              println("Enter your username: ")
+              var inputExistUsr = readLine()
+              val testdf =  spark.sql(s"Select username From Users Where username = '$inputExistUsr'")
+              val testdfString = testdf.first.getString(0)
+              if(testdfString == inputExistUsr){
+                var all_otherUsrs = spark.sql(s"Select * From Users Where username != '$inputExistUsr'")
+                all_otherUsrs.coalesce(1).write.mode("overwrite").csv("C:\\input\\new_data.txt")
+                var newUpdatedText = spark.read.csv("C:\\input\\new_data.txt")
+                newUpdatedText = newUpdatedText.withColumnRenamed("_c0", "username")
+                newUpdatedText = newUpdatedText.withColumnRenamed("_c1", "password")
+                newUpdatedText = newUpdatedText.withColumnRenamed("_c2", "user_type")
+                newUpdatedText.write.mode("overwrite").format("hive").saveAsTable("Users")
+
+              }
+            }
+          }while(adminCont)
         }
         else{
-          println(Console.BOLD)
-          println("Menu Options")
-          println(Console.RESET)
-          println("1: Answer NFL questions")
-          println("2: Update account")
-          println("3: View All users")
-          println("4: Delete account")
-          println("5: Exit the program")
+          do{
+            println(Console.BOLD)
+            println("Menu Options")
+            println(Console.RESET)
+            println("1: Answer NFL questions")
+            println("2: Update account")
+            println("3: View All users")
+            println("4: Delete account")
+            println("5: Log Out")
 
 
-          println("Please enter a number choice")
-          var inputSelected = readLine().toInt
+            println("Please enter a number choice")
+            var inputSelected = readLine().toInt
 
-          if(inputSelected == 1){
-            do{
-              println("Question 1")
-              println("Question 2")
-              println("Question 3")
-              println("Question 4")
-              println("Question 5")
-              println("Question 6")
-              println("7: Return to Main Menu")
-              println("Please enter a number to answer a question or 7 to return to the main menu: ")
-              var inputQuestion = readLine().toInt
+            if(inputSelected == 1){
+              do{
+                println("Question 1")
+                println("Question 2")
+                println("Question 3")
+                println("Question 4")
+                println("Question 5")
+                println("Question 6")
+                println("7: Return to Main Menu")
+                println("Please enter a number to answer a question or 7 to return to the main menu: ")
+                var inputQuestion = readLine().toInt
 
-              if(inputQuestion == 1){
-                println("Analytical Question 1: What is the name of the quarter back for the Arizona Cardinals: ")
-                println("A. Kyler Murray B. Derek Henry C. CeeDee Lamb D. Justin Jefferson")
-                val answer1 = readLine()
-                val ariQB = spark.sql("Select name from CurrentNFL Where Position = 'QB' and Team = 'ARI' and College = 'Oklahoma'")
-                val Question1 = ariQB.first.getString(0)
-                if(answer1 == Question1){
-                  println("Correct Answer")
+                if(inputQuestion == 1){
+                  println("Analytical Question 1: What is the name of the quarter back for the Arizona Cardinals: ")
+                  println("A. Kyler Murray B. Derek Henry C. CeeDee Lamb D. Justin Jefferson")
+                  val answer1 = readLine()
+                  val ariQB = spark.sql("Select name from CurrentNFL Where Position = 'QB' and Team = 'ARI' and College = 'Oklahoma'")
+                  val Question1 = ariQB.first.getString(0)
+                  if(answer1 == Question1){
+                    println("Correct Answer")
+                  }
+                  else{
+                    println("Wrong Answer")
+                  }
                 }
-                else{
-                  println("Wrong Answer")
-                }
-              }
-              if(inputQuestion == 2){
-                println("Analytical Questin 2: What college did famous NFL referee Gary Arthur attend: ")
-                println("Answer choices are: A. Pembroke State B. Illnois State C. Wright State D. UCF")
-                val answer2 = readLine()
-                val refCollege = spark.sql("Select College From RefTable Where Name = 'Gary Arthur'")
+                if(inputQuestion == 2){
+                  println("Analytical Questin 2: What college did famous NFL referee Gary Arthur attend: ")
+                  println("Answer choices are: A. Pembroke State B. Illnois State C. Wright State D. UCF")
+                  val answer2 = readLine()
+                  val refCollege = spark.sql("Select College From RefTable Where Name = 'Gary Arthur'")
 
-                val Question2 = refCollege.first.getString(0)
-                if(answer2 == Question2){
-                  println("Correct Answer")
+                  val Question2 = refCollege.first.getString(0)
+                  if(answer2 == Question2){
+                    println("Correct Answer")
+                  }
+                  else {
+                    println("Wrong Answer")
+                  }
                 }
-                else {
-                  println("Wrong Answer")
+                if(inputQuestion == 3){
+                  println("Analytical Question 3: What season is all pro running back Deebo Samuel in?: ")
+                  println("A. 3rd Season B. 6th Season C. Rookie D. 11th Season")
+                  val answer3 = readLine()
+                  val deebExp = spark.sql("Select ExperienceString From CurrentNFL Where Name = 'Deebo Samuel'")
+                  val Question3 = deebExp.first.getString(0)
+                  if(answer3 == Question3){
+                    println("Correct Answer")
+                  }
+                  else {
+                    println("Wrong Answer")
+                  }
                 }
-              }
-              if(inputQuestion == 3){
-                println("Analytical Question 3: What season is all pro running back Deebo Samuel in?: ")
-                println("A. 3rd Season B. 6th Season C. Rookie D. 11th Season")
-                val answer3 = readLine()
-                val deebExp = spark.sql("Select ExperienceString From CurrentNFL Where Name = 'Deebo Samuel'")
-                val Question3 = deebExp.first.getString(0)
-                if(answer3 == Question3){
-                  println("Correct Answer")
+                if(inputQuestion == 4){
+                  println("Analytical Question 4: How many players in the NFL currently attended Oklahoma in college?: ")
+                  println("A. 100 B. 5 C. 62 D. 50")
+                  val answer4 = readLine().toLong
+                  val okNFL = spark.sql("Select count(*) From CurrentNFL Where College = 'Oklahoma'")
+                  val Question4 = okNFL.first.getLong(0)
+                  if(answer4 == Question4){
+                    println("Correct Answer")
+                  }
+                  else{
+                    println("Wrong Answer")
+                  }
                 }
-                else {
-                  println("Wrong Answer")
+                if(inputQuestion == 5){
+                  println("Analytical Question 5: How many players in the NFL currently was born in 1993?: ")
+                  println("A. 6 B. 90 C. 287 D. 77")
+                  val answer5 = readLine().toLong
+                  val NFL93 = spark.sql("Select count(*) From CurrentNFL Where Birthdate like '1993%'")
+                  val Question5 = NFL93.first.getLong(0)
+                  if(answer5 == Question5){
+                    println("Correct answer")
+                  }
+                  else {
+                    println("Wrong Answer")
+                  }
                 }
-              }
-              if(inputQuestion == 4){
-                println("Analytical Question 4: How many players in the NFL currently attended Oklahoma in college?: ")
-                println("A. 100 B. 5 C. 62 D. 50")
-                val answer4 = readLine().toLong
-                val okNFL = spark.sql("Select count(*) From CurrentNFL Where College = 'Oklahoma'")
-                val Question4 = okNFL.first.getLong(0)
-                if(answer4 == Question4){
-                  println("Correct Answer")
+                if(inputQuestion == 6){
+                  println("Analytical Question 6: How many referees in the NFL today have more than 4 years of experience?: ")
+                  println("A. 11 B. 89 C. 63 D. 200")
+                  val answer6 = readLine().toLong
+                  val refExper = spark.sql("Select count(*) From RefTable Where Experience > 4")
+                  val Question6 = refExper.first.getLong(0)
+                  if(answer6 == Question6){
+                    println("Correct answer")
+                  }
+                  else{
+                    println("Wrong answer")
+                  }
                 }
-                else{
-                  println("Wrong Answer")
-                }
-              }
-              if(inputQuestion == 5){
-                println("Analytical Question 5: How many players in the NFL currently was born in 1993?: ")
-                println("A. 6 B. 90 C. 287 D. 77")
-                val answer5 = readLine().toLong
-                val NFL93 = spark.sql("Select count(*) From CurrentNFL Where Birthdate like '1993%'")
-                val Question5 = NFL93.first.getLong(0)
-                if(answer5 == Question5){
-                  println("Correct answer")
-                }
-                else {
-                  println("Wrong Answer")
-                }
-              }
-              if(inputQuestion == 6){
-                println("Analytical Question 6: How many referees in the NFL today have more than 4 years of experience?: ")
-                println("A. 11 B. 89 C. 63 D. 200")
-                val answer6 = readLine().toLong
-                val refExper = spark.sql("Select count(*) From RefTable Where Experience > 4")
-                val Question6 = refExper.first.getLong(0)
-                if(answer6 == Question6){
-                  println("Correct answer")
-                }
-                else{
-                  println("Wrong answer")
-                }
-              }
-              if(inputQuestion == 7){
-                cont1 = false
-              }
-
-            }while(cont1)
-          }
-          /*if(inputSelected == 4){
-            println("Enter a username: ")
-            val new_username1 = readLine()
-            println("Enter a password: ")
-            val new_pwd1 = readLine()
-            val new_usr_type1 = "Basic"
-            val new_df4 = Seq((new_username1, new_pwd1, new_usr_type1)).toDF("username", "password","user type")
-            new_df4.write.mode("append").csv("C:\\input\\new_data.txt")
-            var new_dfText1 = spark.read.csv("C:\\input\\new_data.txt")
-            new_dfText1 = new_dfText1.withColumnRenamed("_c0", "username")
-            new_dfText1 = new_dfText1.withColumnRenamed("_c1", "password")
-            new_dfText1 = new_dfText1.withColumnRenamed("_c2", "user_type")
-            new_dfText1.write.mode("append").format("hive").saveAsTable("Users")
-          }*/
-          if(inputSelected == 3){
-            spark.sql("Select * From Users").show()
-          }
-          if(inputSelected == 2){
-
-            do{
-              println("1: Change Password")
-              println("2: Change Username")
-              println("3: Go Back to Main Menu")
-              println("Please choose a number to update account: ")
-              var updateUsrNum = readLine().toInt
-
-              if(updateUsrNum == 1){
-                println("Enter your username: ")
-                var inputExistUsr = readLine()
-                val testdf =  spark.sql(s"Select username From Users Where username = '$inputExistUsr'")
-                val testdfString = testdf.first.getString(0)
-                //println(testdfString)
-
-                if(testdfString == inputExistUsr){
-                  println("Please choose a new password: ")
-                  var newUsrPwd = readLine()
-                  val exUsrType = "Basic"
-                  var new_updateUsrDF = Seq((inputExistUsr, newUsrPwd, exUsrType)).toDF("username", "password","user type")
-                  var all_otherUsrs = spark.sql(s"Select * From Users Where username != '$inputExistUsr'")
-                  var updated_df = all_otherUsrs.union(new_updateUsrDF)
-                  updated_df.coalesce(1).write.mode("overwrite").csv("C:\\input\\new_data.txt")
-                  var newUpdatedText = spark.read.csv("C:\\input\\new_data.txt")
-                  newUpdatedText = newUpdatedText.withColumnRenamed("_c0", "username")
-                  newUpdatedText = newUpdatedText.withColumnRenamed("_c1", "password")
-                  newUpdatedText = newUpdatedText.withColumnRenamed("_c2", "user_type")
-                  newUpdatedText.write.mode("overwrite").format("hive").saveAsTable("Users")
+                if(inputQuestion == 7){
+                  cont1 = false
                 }
 
-              }
-              if(updateUsrNum == 3){
-                cont2 = false
-              }
+              }while(cont1)
+            }
+            /*if(inputSelected == 4){
+              println("Enter a username: ")
+              val new_username1 = readLine()
+              println("Enter a password: ")
+              val new_pwd1 = readLine()
+              val new_usr_type1 = "Basic"
+              val new_df4 = Seq((new_username1, new_pwd1, new_usr_type1)).toDF("username", "password","user type")
+              new_df4.write.mode("append").csv("C:\\input\\new_data.txt")
+              var new_dfText1 = spark.read.csv("C:\\input\\new_data.txt")
+              new_dfText1 = new_dfText1.withColumnRenamed("_c0", "username")
+              new_dfText1 = new_dfText1.withColumnRenamed("_c1", "password")
+              new_dfText1 = new_dfText1.withColumnRenamed("_c2", "user_type")
+              new_dfText1.write.mode("append").format("hive").saveAsTable("Users")
+            }*/
+            if(inputSelected == 3){
+              spark.sql("Select * From Users").show()
+            }
+            if(inputSelected == 2){
+
+              do{
+                println("1: Change Password")
+                println("2: Change Username")
+                println("3: Go Back to Main Menu")
+                println("Please choose a number to update account: ")
+                var updateUsrNum = readLine().toInt
+
+                if(updateUsrNum == 1){
+                  println("Enter your username: ")
+                  var inputExistUsr = readLine()
+                  val testdf =  spark.sql(s"Select username From Users Where username = '$inputExistUsr'")
+                  val testdfString = testdf.first.getString(0)
+                  //println(testdfString)
+
+                  if(testdfString == inputExistUsr){
+                    println("Please choose a new password: ")
+                    var newUsrPwd = readLine()
+                    val exUsrType = "Basic"
+                    var new_updateUsrDF = Seq((inputExistUsr, newUsrPwd, exUsrType)).toDF("username", "password","user type")
+                    var all_otherUsrs = spark.sql(s"Select * From Users Where username != '$inputExistUsr'")
+                    var updated_df = all_otherUsrs.union(new_updateUsrDF)
+                    updated_df.coalesce(1).write.mode("overwrite").csv("C:\\input\\new_data.txt")
+                    var newUpdatedText = spark.read.csv("C:\\input\\new_data.txt")
+                    newUpdatedText = newUpdatedText.withColumnRenamed("_c0", "username")
+                    newUpdatedText = newUpdatedText.withColumnRenamed("_c1", "password")
+                    newUpdatedText = newUpdatedText.withColumnRenamed("_c2", "user_type")
+                    newUpdatedText.write.mode("overwrite").format("hive").saveAsTable("Users")
+                  }
+
+                }
+                if(updateUsrNum == 3){
+                  cont2 = false
+                }
 
 
-            }while(cont2)
+              }while(cont2)
 
 
-
-          }
-          if(inputSelected == 5){
-            cont = false
-          }
-          if(inputSelected == 4){
-            println("Enter your username: ")
-            var inputExistUsr = readLine()
-            val testdf =  spark.sql(s"Select username From Users Where username = '$inputExistUsr'")
-            val testdfString = testdf.first.getString(0)
-            if(testdfString == inputExistUsr){
-              var all_otherUsrs = spark.sql(s"Select * From Users Where username != '$inputExistUsr'")
-              all_otherUsrs.coalesce(1).write.mode("overwrite").csv("C:\\input\\new_data.txt")
-              var newUpdatedText = spark.read.csv("C:\\input\\new_data.txt")
-              newUpdatedText = newUpdatedText.withColumnRenamed("_c0", "username")
-              newUpdatedText = newUpdatedText.withColumnRenamed("_c1", "password")
-              newUpdatedText = newUpdatedText.withColumnRenamed("_c2", "user_type")
-              newUpdatedText.write.mode("overwrite").format("hive").saveAsTable("Users")
 
             }
-          }
+            if(inputSelected == 5){
+              basicCont = false
+            }
+            if(inputSelected == 4){
+              println("Enter your username: ")
+              var inputExistUsr = readLine()
+              val testdf =  spark.sql(s"Select username From Users Where username = '$inputExistUsr'")
+              val testdfString = testdf.first.getString(0)
+              if(testdfString == inputExistUsr){
+                var all_otherUsrs = spark.sql(s"Select * From Users Where username != '$inputExistUsr'")
+                all_otherUsrs.coalesce(1).write.mode("overwrite").csv("C:\\input\\new_data.txt")
+                var newUpdatedText = spark.read.csv("C:\\input\\new_data.txt")
+                newUpdatedText = newUpdatedText.withColumnRenamed("_c0", "username")
+                newUpdatedText = newUpdatedText.withColumnRenamed("_c1", "password")
+                newUpdatedText = newUpdatedText.withColumnRenamed("_c2", "user_type")
+                newUpdatedText.write.mode("overwrite").format("hive").saveAsTable("Users")
+
+              }
+            }
+          }while(basicCont)
         }
 
+      }
+      if(usrInputNum == 3){
+        cont = false
       }
 
 
