@@ -266,7 +266,6 @@ object Project1 {
 
               do{
                 println("1: Change Password")
-                println("2: Change Username")
                 println("3: Go Back to Main Menu")
                 println("Please choose a number to update account: ")
                 var updateUsrNum = readLine().toInt
@@ -275,14 +274,16 @@ object Project1 {
                   println("Enter your username: ")
                   var inputExistUsr = readLine()
                   val testdf =  spark.sql(s"Select username From Users Where username = '$inputExistUsr'")
+                  val userTypeDf = spark.sql(s"Select user_type From Users Where username = '$inputExistUsr'")
                   val testdfString = testdf.first.getString(0)
+                  val userType = userTypeDf.first.getString(0)
                   //println(testdfString)
 
                   if(testdfString == inputExistUsr){
                     println("Please choose a new password: ")
                     var newUsrPwd = readLine()
-                    val exUsrType = "Basic"
-                    var new_updateUsrDF = Seq((inputExistUsr, newUsrPwd, exUsrType)).toDF("username", "password","user type")
+
+                    var new_updateUsrDF = Seq((inputExistUsr, newUsrPwd, userType)).toDF("username", "password","user type")
                     var all_otherUsrs = spark.sql(s"Select * From Users Where username != '$inputExistUsr'")
                     var updated_df = all_otherUsrs.union(new_updateUsrDF)
                     updated_df.coalesce(1).write.mode("overwrite").csv("C:\\input\\new_data.txt")
@@ -458,7 +459,6 @@ object Project1 {
 
               do{
                 println("1: Change Password")
-                println("2: Change Username")
                 println("3: Go Back to Main Menu")
                 println("Please choose a number to update account: ")
                 var updateUsrNum = readLine().toInt
