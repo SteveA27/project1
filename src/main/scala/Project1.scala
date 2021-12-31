@@ -52,22 +52,21 @@ object Project1 {
     spark.sql("Create Table RefTable as select * from RefTableTemp")
     spark.sql("Drop Table if exists CurrentNFL")
     spark.sql("Create Table CurrentNFL as select * from CurrentNFLTemp")
-    spark.sql("Select * From RefTable").show()
-    spark.sql("Select * from CurrentNFL").show()
-    spark.sql("Select College From RefTable Where Name = 'Barry Anderson'").show()
+
+    //spark.sql("Select College From RefTable Where Name = 'Barry Anderson'").show()
     //df.printSchema()
-    spark.sql("Select Name From CurrentNFL Where Birthdate like '1997%'").show()
-    val answer = "North Carolina State"
-    val correct_answer = spark.sql("Select College From RefTable Where Name = 'Barry Anderson'")
-    val correct_answerRow = correct_answer.first.getString(0)
+    //spark.sql("Select Name From CurrentNFL Where Birthdate like '1997%'").show()
+    //val answer = "North Carolina State"
+    //val correct_answer = spark.sql("Select College From RefTable Where Name = 'Barry Anderson'")
+    //val correct_answerRow = correct_answer.first.getString(0)
     //val collegeName = correct_answerRow(0)
-    if( answer == correct_answerRow){
-      println("Correct Answer")
-    }
-    else {
-      println("Wrong Answer")
-    }
-    println(correct_answerRow)
+    //if( answer == correct_answerRow){
+      //println("Correct Answer")
+    //}
+   // else {
+      //println("Wrong Answer")
+    //}
+    //println(correct_answerRow)
     spark.sql("Drop table if exists Users")
     spark.sql("Create table users (username string, password string, user_type string)")
     /*val usrs = spark.sql("Select * From users")
@@ -144,6 +143,7 @@ object Project1 {
             println("4: Create user")
             println("5: Log Out")
             println("6: Delete user")
+            println("7: Study")
 
             println("Please enter a number choice")
             var inputSelected = readLine().toInt
@@ -202,7 +202,7 @@ object Project1 {
                 }
                 if(inputQuestion == 4){
                   println("Analytical Question 4: How many players in the NFL currently attended Oklahoma in college?: ")
-                  println("A. 100 B. 5 C. 62 D. 50")
+                  println("A. 100 B. 5 C. 48 D. 50")
                   val answer4 = readLine().toLong
                   val okNFL = spark.sql("Select count(*) From CurrentNFL Where College = 'Oklahoma'")
                   val Question4 = okNFL.first.getLong(0)
@@ -215,7 +215,7 @@ object Project1 {
                 }
                 if(inputQuestion == 5){
                   println("Analytical Question 5: How many players in the NFL currently was born in 1993?: ")
-                  println("A. 6 B. 90 C. 287 D. 77")
+                  println("A. 6 B. 90 C. 273 D. 77")
                   val answer5 = readLine().toLong
                   val NFL93 = spark.sql("Select count(*) From CurrentNFL Where Birthdate like '1993%'")
                   val Question5 = NFL93.first.getLong(0)
@@ -321,8 +321,31 @@ object Project1 {
                 newUpdatedText = newUpdatedText.withColumnRenamed("_c1", "password")
                 newUpdatedText = newUpdatedText.withColumnRenamed("_c2", "user_type")
                 newUpdatedText.write.mode("overwrite").format("hive").saveAsTable("Users")
+                if(inputExistUsr == usrName){
+                  adminCont = false
+                }
 
               }
+            }
+            if(inputSelected == 7){
+              spark.sql("Select * From RefTable").show()
+              spark.sql("Select * from CurrentNFL").show()
+              println("Analytical Question 1: What is the name of the quarter back for the Arizona Cardinals: ")
+              spark.sql("Select name from CurrentNFL Where Position = 'QB' and Team = 'ARI' and College = 'Oklahoma'").show()
+              println("Analytical Questin 2: What college did famous NFL referee Gary Arthur attend: ")
+              spark.sql("Select College From RefTable Where Name = 'Gary Arthur'").show()
+              println("Analytical Question 3: What season is all pro running back Deebo Samuel in?: ")
+              spark.sql("Select ExperienceString From CurrentNFL Where Name = 'Deebo Samuel'").show()
+              println("Analytical Question 4: How many players in the NFL currently attended Oklahoma in college?: ")
+              spark.sql("Select count(*) From CurrentNFL Where College = 'Oklahoma'").show()
+              println("Analytical Question 5: How many players in the NFL currently was born in 1993?: ")
+              spark.sql("Select count(*) From CurrentNFL Where Birthdate like '1993%'").show()
+              println("Analytical Question 6: How many referees in the NFL today have more than 4 years of experience?: ")
+              spark.sql("Select count(*) From RefTable Where Experience > 4").show()
+
+
+
+
             }
           }while(adminCont)
         }
@@ -333,9 +356,10 @@ object Project1 {
             println(Console.RESET)
             println("1: Answer NFL questions")
             println("2: Update account")
-            println("3: View All users")
+            println("3: View account information")
             println("4: Delete account")
             println("5: Log Out")
+            println("6: Study")
 
 
             println("Please enter a number choice")
@@ -395,7 +419,7 @@ object Project1 {
                 }
                 if(inputQuestion == 4){
                   println("Analytical Question 4: How many players in the NFL currently attended Oklahoma in college?: ")
-                  println("A. 100 B. 5 C. 62 D. 50")
+                  println("A. 100 B. 5 C. 48 D. 50")
                   val answer4 = readLine().toLong
                   val okNFL = spark.sql("Select count(*) From CurrentNFL Where College = 'Oklahoma'")
                   val Question4 = okNFL.first.getLong(0)
@@ -408,7 +432,7 @@ object Project1 {
                 }
                 if(inputQuestion == 5){
                   println("Analytical Question 5: How many players in the NFL currently was born in 1993?: ")
-                  println("A. 6 B. 90 C. 287 D. 77")
+                  println("A. 6 B. 90 C. 273 D. 77")
                   val answer5 = readLine().toLong
                   val NFL93 = spark.sql("Select count(*) From CurrentNFL Where Birthdate like '1993%'")
                   val Question5 = NFL93.first.getLong(0)
@@ -453,7 +477,9 @@ object Project1 {
               new_dfText1.write.mode("append").format("hive").saveAsTable("Users")
             }*/
             if(inputSelected == 3){
-              spark.sql("Select * From Users").show()
+              //println("Enter your username: ")
+              //var usrNowName = readLine()
+              spark.sql(s"Select * From Users Where username = '$usrName'").show()
             }
             if(inputSelected == 2){
 
@@ -500,8 +526,8 @@ object Project1 {
               basicCont = false
             }
             if(inputSelected == 4){
-              println("Enter your username: ")
-              var inputExistUsr = readLine()
+              //println("Enter your username: ")
+              var inputExistUsr = usrName
               val testdf =  spark.sql(s"Select username From Users Where username = '$inputExistUsr'")
               val testdfString = testdf.first.getString(0)
               if(testdfString == inputExistUsr){
@@ -512,8 +538,24 @@ object Project1 {
                 newUpdatedText = newUpdatedText.withColumnRenamed("_c1", "password")
                 newUpdatedText = newUpdatedText.withColumnRenamed("_c2", "user_type")
                 newUpdatedText.write.mode("overwrite").format("hive").saveAsTable("Users")
-
+                basicCont = false
               }
+            }
+            if(inputSelected == 6){
+              spark.sql("Select * From RefTable").show()
+              spark.sql("Select * from CurrentNFL").show()
+              println("Analytical Question 1: What is the name of the quarter back for the Arizona Cardinals: ")
+              spark.sql("Select name from CurrentNFL Where Position = 'QB' and Team = 'ARI' and College = 'Oklahoma'").show()
+              println("Analytical Questin 2: What college did famous NFL referee Gary Arthur attend: ")
+              spark.sql("Select College From RefTable Where Name = 'Gary Arthur'").show()
+              println("Analytical Question 3: What season is all pro running back Deebo Samuel in?: ")
+              spark.sql("Select ExperienceString From CurrentNFL Where Name = 'Deebo Samuel'").show()
+              println("Analytical Question 4: How many players in the NFL currently attended Oklahoma in college?: ")
+              spark.sql("Select count(*) From CurrentNFL Where College = 'Oklahoma'").show()
+              println("Analytical Question 5: How many players in the NFL currently was born in 1993?: ")
+              spark.sql("Select count(*) From CurrentNFL Where Birthdate like '1993%'").show()
+              println("Analytical Question 6: How many referees in the NFL today have more than 4 years of experience?: ")
+              spark.sql("Select count(*) From RefTable Where Experience > 4").show()
             }
           }while(basicCont)
         }
