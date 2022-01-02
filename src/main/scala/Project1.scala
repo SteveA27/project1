@@ -349,7 +349,7 @@ object Project1 {
             }
           }while(adminCont)
         }
-        else{
+        else if((usrName == usrNameV) && (usrTypeV == "Basic")&& (usrPwdV == usrPwd)){
           do{
             println(Console.BOLD)
             println("Menu Options")
@@ -558,6 +558,9 @@ object Project1 {
               spark.sql("Select count(*) From RefTable Where Experience > 4").show()
             }
           }while(basicCont)
+        }
+        else if((usrName != usrNameV) && (usrTypeV != "Basic")&& (usrPwdV != usrPwd)&& (usrTypeV != "Admin")) {
+          println("Wrong username or password. Please Try Again")
         }
 
       }
